@@ -18,4 +18,7 @@ print('你好，我的未来');
 // 可以将数据以及数据的类型打印为特定格式
 var_dump('hello,我的过去');
 
+$name = "http://www.baidu.com";
+var_dump(strpos("http://",$name));
+
  ?>

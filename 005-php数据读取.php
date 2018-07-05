@@ -35,12 +35,12 @@
         }
     </style>
     <?php
-    $items = file('names.txt');
-    $data = [];
-    for ($i = 0;$i<count($items);$i++) {
-        $lines = $items[$i];
-        array_push($data,$lines);
-    }
+        $items = file('names.txt');
+        $data = [];
+        for ($i = 0;$i<count($items);$i++) {
+            $lines = $items[$i];
+            array_push($data,$lines);
+        }
     ?>
     <script>
         window.onload = function () {
