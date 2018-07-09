@@ -1,4 +1,4 @@
-<<?php 
+<?php 
 
 // 用于接收URL地址中提交的数据
 var_dump($_GET);

@@ -13,11 +13,13 @@
 	</style>
 </head>
 <body>
-
-    <div><span>姓名:</span><input type="text" name="username"></div>
-    <div><span>年龄:<input type="text" name="userage"></div>
-    <div><span>邮箱:<input type="text" name="useremail"></div>
-    <div><span>主页:<input type="text" name="userpage"></div>
-    <div><span><input type="submit" name="submit"></div>	
+    <form action="012-addTargetInfo.php" method="post">
+    	<div><span>姓名:</span><input type="text" name="username"></div>
+	    <div><span>年龄:<input type="text" name="userage"></div>
+	    <div><span>邮箱:<input type="text" name="useremail"></div>
+	    <div><span>主页:<input type="text" name="userpage"></div>
+	    <div><span><input type="submit" name=""></div>
+    </form>
+    	
 </body>
 </html>

@@ -32,11 +32,11 @@
         }
     </style>
      <?php 
-         //整个文件读取到一个字符串中，获取文件数据
+         // 整个文件读取到一个字符串中，获取文件数据
          $content = file_get_contents('names.txt');
-         //拆分字符串
+         // 拆分字符串
          $info_data = explode("\n",$content);
-         //整理数组
+         // 整理数组
          $show_data = [];
          foreach ($info_data as $item) {
          	if (strlen($item)) {
@@ -45,9 +45,22 @@
          	}
          }
 
-         //获取到添加的数据，刷新文件数据
-         var_dump($_POST);
-      ?>
+         $tempArr = [];
+         // 获取文件中的id编号
+         $tempArr[] = count($show_data)+1;
+         foreach ($_POST as $key => $value) {
+             $tempArr[] = $value;
+         }
+         // 添加数据
+         $show_data[] = $tempArr;
+         // 写入到文件中
+         $file = fopen('names.txt','a+');
+         // 将数组转化为 字符串，每个元素添加' | '
+         $show = implode(' | ',$tempArr);
+         fwrite($file,$show);
+         fclose($file);
+
+       ?>
 </head>
 <body>
 	<div class="box">
