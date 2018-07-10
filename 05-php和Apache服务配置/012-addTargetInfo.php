@@ -45,20 +45,30 @@
          	}
          }
 
-         $tempArr = [];
+         // php中有三个超全局变量来专门获取表单提交内容
+         // $_GET 用于获取get方式提交的内容，就是接收URL地址问号参数中的数据
+         // $_POST 用于获取POST方式提交的内容，就是接收请求体中的数据
+         // $_REQUEST 用于获取GET和POST方式提交的内容
+         // 
+
          // 获取文件中的id编号
-         $tempArr[] = count($show_data)+1;
-         foreach ($_POST as $key => $value) {
-             $tempArr[] = $value;
-         }
-         // 添加数据
-         $show_data[] = $tempArr;
-         // 写入到文件中
-         $file = fopen('names.txt','a+');
-         // 将数组转化为 字符串，每个元素添加' | '
-         $show = implode(' | ',$tempArr);
-         fwrite($file,$show);
-         fclose($file);
+         if (count($_POST) > 0) {
+            $tempArr = [];
+            $tempArr[] = count($show_data)+1;
+            foreach ($_POST as $key => $value) {
+                $tempArr[] = $value;
+            }
+            // 添加数据
+            $show_data[] = $tempArr;
+            // 写入到文件中
+            $file = fopen('names.txt','a+');
+            // 将数组转化为 字符串，每个元素添加' | '
+            $show = implode(' | ',$tempArr);
+            // 添加换行操作
+            fwrite($file,"$show\r\n");
+            fclose($file);
+        }
+         
 
        ?>
 </head>
