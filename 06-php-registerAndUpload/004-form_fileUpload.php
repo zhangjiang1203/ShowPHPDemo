@@ -20,9 +20,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		<input type="text">
 		<input type="file" name="img">
 		<button type="submit">上传</button>
-		
-
-
 	</form>
 
 </body>
