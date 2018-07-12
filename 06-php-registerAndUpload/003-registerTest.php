@@ -1,42 +1,58 @@
 <?php 
+/*
+ * 处理用户登录信息的判断
+ */
+function userInputInfo() {
+	 // var_dump($_POST);
+	 // 声明message是一个全局变量
+	 // message定义在函数中，作用域不同显示不出来，声明为全局变量才能拿到
+	 // 或者定义为 $GLOBALS['message'] = ;在下面依然可以使用message变量
+	global $message;
+	$username = $_POST['username'];
+    if (empty($username)) {
+     	$message = "用户名为空，请重试";
+     	return;
+	}
+
+	$password = $_POST['password'];
+	if (empty($password)) {
+	 	$message = "请输入密码";
+	 	return;
+    }
+
+	if ($password != $_POST['confirmPSD']){
+ 		$message = "两次密码输入不一致误，请重新输入";
+ 		return;
+	}
+
+ 	if (!(isset($_POST['agree'])) && $_POST['agree'] != 'true') {
+ 		$message = "请同意该协议";
+ 		return;
+ 	}
+
+	foreach ($_POST as $key => $value) {
+    	if ($key == 'username' or $key == 'password') {
+    		$tempArr[] = $value;
+        }
+    }
+     var_dump($tempArr);
+     // 添加数据
+     // 写入到文件中
+     $file = fopen('names.txt','a+');
+     // 将数组转化为 字符串，每个元素添加' | '
+     $show = implode(' | ',$tempArr);
+     // 添加换行操作
+     fwrite($file,"$show\r\n");
+     fclose($file);
+ }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    userInputInfo();
+	
 
-	 // var_dump($_POST);
-	 $message = NULL;
-	 $username = $_POST['username'];
-	 if (empty($username)) {
-	 	$message = "用户名为空，请重试";
-	 }else{
-		 $password = $_POST['password'];
-		 if (empty($password)) {
-		 	$message = "请输入密码";
-		 }else{
-		 	if ($password != $_POST['confirmPSD']){
-	 			$message = "两次密码输入不一致误，请重新输入";
-			 }else{
-			 	if ($_POST['agree'] != 'true') {
-			 		$message = "请同意该协议";
-			 	}else{
-			 		foreach ($_POST as $key => $value) {
-				    	if ($key == 'username' or $key == 'password') {
-				    		 $tempArr[] = $value;
-				         }
-			        }
-				     var_dump($tempArr);
-				     // 添加数据
-				     // 写入到文件中
-				     $file = fopen('names.txt','a+');
-				     // 将数组转化为 字符串，每个元素添加' | '
-				     $show = implode(' | ',$tempArr);
-				     // 添加换行操作
-				     fwrite($file,"$show\r\n");
-				     fclose($file);
-			 	}
-			 }
-		 }
-	 }   	
-}
+ 	// 不建议在一个非函数作用域写return语句
+ 	
+   }
  ?>
 
 <!DOCTYPE html>
