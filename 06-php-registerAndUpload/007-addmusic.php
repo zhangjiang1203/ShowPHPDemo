@@ -17,44 +17,105 @@ function uploadfile(){
 		return;
 	}
 
-	if (empty($_POST['images'])) {
-		# code...
-		$GLOBALS['images'] = '请输入图片';
-		return;
+	// 都成功之后跳转到特定界面
+	if (checkImage() && checkAudio()) {
+		header('Loaction:006-musiclist.php');
 	}
+	
+	
+}
 
-	if (empty($_POST['source'])) {
-		# code...
-		$GLOBALS['error_msg'] = '请输入地址';
-		return;
-	}
-	$input = $_POST;	
-	$input['id'] = count($arr)+1;
-	var_dump($input);
-
+function checkImage(){
 	// 判断文件是否上传
 	if (empty($_FILES['images'])) {
 		# code...
 		// 客户端提交表单中有image文件域
-		$GLOBALS['error_msg'] = '请正确提交文件';
-		return;
+		$GLOBALS['error_msg'] = '请正确提交图片文件';
+		return False;
+	}
+
+	$images = $_FILES['images'];
+	//判断用户是否选择了文件
+	if ($images['error'] !== UPLOAD_ERR_OK) {
+		$GLOBALS['error_msg'] = '请选择图片文件';
+		return False;
 	}
 
 	// 校验文件大小和类型
-	// 
-
-	$source = $_FILES['source'];
-	// uniqid()生成一个随机的标识，防止文件重名被覆盖掉
-	$target = './uploads/' . uniqid() . $source['name'];
-
-	if (!move_uploaded_file($source['tem_name'],$target)) {
-		$GLOBALS['error_msg'] = '上传文件失败';
-		return;
+	if ($images['size'] > 10 * 1024 * 1024) {
+		//文件大小限制在10M
+		$GLOBALS['error_msg'] = "图片过大";
+		return False;
 	}
 
-	echo "上传和移动文件成功";
-	
+	// 校验类型 传入一个数组
+	$allow_types = array('image/jpg','image/png','image/jpeg');
+	// 判断上传的文件类型是否是指定的其中的一个类型
+	if (!in_array($images['type'],$allow_types)) {
+		$GLOBALS['error_msg'] = '这是不支持的图片文件';
+		return False;
+	}
 
+	if (!is_dir('uploads/img')) {
+	 	mkdir("uploads/img",0777,true);
+	}
+    
+	// uniqid()生成一个随机的标识，防止文件重名被覆盖掉
+	$target = './uploads/img/' . uniqid() . $images['name'];
+	if (!move_uploaded_file($images['tmp_name'],$target)) {
+		$GLOBALS['error_msg'] = '上传图片失败';
+		return False;
+	}
+	$GLOBALS['errror_msg'] = '上传图片成功';
+	return True;
+}
+
+
+function checkAudio(){
+    // 接收音乐
+	if (empty($_FILES['audio'])) {
+		$GLOBALS['error_msg'] = "请上传音乐文件";
+		return False;
+	}
+	$audio = $_FILES['audio'];
+	var_dump($audio);
+	if ($audio['error'] !== UPLOAD_ERR_OK) {
+		$GLOBALS['error_msg'] = "请正确上传音乐文件";
+		return False;
+	}
+
+	if ($audio['size'] > 10 * 1024 * 1024) {
+		//文件大小限制在1M
+		$GLOBALS['error_msg'] = "音乐文件太大";
+		return False;
+	}
+
+	if ($images['size'] < 1 * 1024 * 1024) {
+		//文件大小限制在10M
+		$GLOBALS['error_msg'] = "音乐文件太小";
+		return False;
+	}
+
+	// 校验类型 传入一个数组
+	$allow_types = array('audio/mp3','audio/wma','audio/m4a');
+	// 判断上传的文件类型是否是指定的其中的一个类型
+	if (!in_array($audio['type'],$allow_types)) {
+		$GLOBALS['error_msg'] = '这是不支持的音乐文件';
+		return False;
+	}
+
+	if (!is_dir('uploads/audio')) {
+	 	mkdir("uploads/audio",0777,true);
+	}
+
+	$target = './uploads/audio/' . uniqid() . $images['name'];
+	if (!move_uploaded_file($audio['tmp_name'],$target)) {
+		$GLOBALS['error_msg'] = '上传音乐失败';
+		return False;
+	}
+
+	$GLOBALS['errror_msg'] = '上传音乐成功';
+	return True;
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -114,17 +175,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			<p>歌手</p>
 			<input type="text" name="artist">
 
+            <!-- accept属性可以限制添加的文件类型 值是MIME Type 比如图片 image/* 设置所有上传文件，不能解决文件的限制，还是要在服务端继续校验 -->
+            <!-- accept还可以在后面添加'.lrc,.mp3,'这种格式限制添加文件的类型 -->
 			<p>海报</p>
-			<input type="text" name="images">
+			<!-- 添加multiple可以让一个文件域多选 -->
+			<input type="file" name="images" accept="image/*" multiple>
 
 			<p>地址</p>
-			<input type="text" name="source">
+			<input type="file" name="audio" accept="audio/*">
 
-            <!-- accept属性可以限制添加的文件类型 值是MIME Type 比如图片 image/* 设置所有上传文件，不能解决文件的限制，还是要在服务端继续校验 -->
-			<input type="file" name="file" accept="">
+            
 
 			<?php if (isset($error_msg)): ?>
-				<p><?php echo $error_msg ?></p>
+				<p style="color: red"><?php echo $error_msg ?></p>
 			<?php endif ?>
 
 			<button type="submit">提交</button>
