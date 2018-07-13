@@ -179,6 +179,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <!-- accept还可以在后面添加'.lrc,.mp3,'这种格式限制添加文件的类型 -->
 			<p>海报</p>
 			<!-- 添加multiple可以让一个文件域多选 -->
+			<!-- 上传多个文件，在name属性后面的字段添加[],既是name=images[] -->
+			<!-- 上传多个文件 都在images[]这个数组中 -->
 			<input type="file" name="images" accept="image/*" multiple>
 
 			<p>地址</p>
