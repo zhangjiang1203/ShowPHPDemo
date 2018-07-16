@@ -52,6 +52,8 @@
 		div .musicTab tr td .deleteBtn{
 			width: 76px;
 			height: 30px;
+			line-height: 30px;
+			font-size: 18px;
 			background-color: red;
 			color: white;
 			border-radius: 5px;
@@ -59,9 +61,9 @@
 
 	</style>
 	<?php 
-    require '008-loadJSONFile.php';
-    // var_dump($arr);
- 
+   	    $content = file_get_contents('../06-php-registerAndUpload/data.json');
+		// json_decode默认反序列化时将json中的对象转换为PHP中的stdClass
+		$arr = json_decode($content,true); 
 
 	 ?>
 
@@ -70,7 +72,7 @@
 
 	<div>
 		<h2>音乐列表</h2>
-		<a href="007-addmusic.php">添加</a>
+		<a href="004-addmusic.php">添加</a>
 		<table border=1 class="musicTab">
 			<thead>
 				<tr>
@@ -89,7 +91,7 @@
 						<td><img src=<?php echo $value["images"]; ?> alt='我就是图片'></td>
 						<td><audio src=<?php echo $value["source"]; ?> controls> </audio></td>
 						
-						<td><button class="deleteBtn">删除</button></td>
+						<td><a class="deleteBtn" href="05-delete.php?id=<?php echo $value['id']; ?>">删除</a></td>
 					</tr>
 				<?php endforeach ?>
 			</tbody>

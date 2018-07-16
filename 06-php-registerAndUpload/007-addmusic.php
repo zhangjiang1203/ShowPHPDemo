@@ -35,7 +35,8 @@ function uploadfile(){
 		$json_Arr[] = $tmp_name;
 		var_dump($json_Arr);	
 		file_put_contents('data.json', json_encode($json_Arr));
-		header('Loaction:006-musiclist.php');
+		// 跳转到页面
+		header('Location:006-musiclist.php');
 	}
 	
 	
@@ -202,7 +203,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			<!-- 上传多个文件 都在images[]这个数组中 -->
 			<input type="file" name="images" accept="image/*" multiple>
 
-			<p>地址</p>
+			<p>歌曲</p>
 			<input type="file" name="audio" accept="audio/*">
 
             
