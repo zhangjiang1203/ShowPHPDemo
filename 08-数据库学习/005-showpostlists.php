@@ -78,6 +78,24 @@
 			text-align: right;
 		}
 
+		.box .center ul li .content .rightcontent .contentbottom a{
+			display: inline-block;
+			width: 50px;
+			height: 30px;
+			line-height: 30px;
+			border-radius: 5px;
+			text-align: center;
+			color: white;
+		}
+
+		.box .center ul li .content .rightcontent .contentbottom a.edit{
+			background: #1062ff;
+		}
+
+		.box .center ul li .content .rightcontent .contentbottom a.delete{
+			background: red;
+		}
+
 		.box .center ul li .content .rightcontent .contentbottom span{
 			padding-left: 10px;
 			color: #acacac;
@@ -153,6 +171,8 @@
 							</p>
 							<p class="article"><?php echo $result['content']; ?></p>
 							<div class="contentbottom">
+								<a class="edit" href="006-editpost.php?id=<?php echo $result['id']; ?>">编辑</a>
+								<a class="delete" href="007-deletepost.php?id=<?php echo $result['id']; ?>">删除</a>
 								<span class="contentScan">浏览 <?php echo $result['views']; ?></span>
 								<span class="contentLike">喜欢 <?php echo $result['likes']; ?></span>
 							</div>
