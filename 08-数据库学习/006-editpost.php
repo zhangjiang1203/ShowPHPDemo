@@ -30,6 +30,7 @@ function save_data(){
 	echo "<pre>";
 	var_dump($_POST);
 	echo "</pre>";
+	// update posts set name='' title='' where id=1
 
 } 
 
