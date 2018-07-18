@@ -6,7 +6,7 @@ if (!$connection) {
 	exit('<h1>数据库连接失败</h1>');
 }
 // 2.查询数据
-$query = mysqli_query($connection,'select * from categories');
+$query = mysqli_query($connection,'SELECT * FROM posts LIMIT 0,30;');
 if (!$query) {
 	# code...
 	exit('<h1>查询失败</h1>');

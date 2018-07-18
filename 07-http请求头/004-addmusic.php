@@ -78,13 +78,16 @@ function checkImage(){
 	}
     
 	// uniqid()生成一个随机的标识，防止文件重名被覆盖掉
-	$target = '../uploads/img/' . uniqid() . $images['name'];
+	// move_uploaded_file在Windows中文系统上要求传入的参数如果有中文必须是GBK编码
+	// 切记在接收文件时注意文件名中文的问题，通过iconv函数转换中文编码为GBK编码
+	// $target = '../uploads/img/' . uniqid() . $images['name'];
+	$target = '../uploads/img/' . uniqid() . iconv('utf-8', 'GBK', $images['name']);
 	if (!move_uploaded_file($images['tmp_name'],$target)) {
 		$GLOBALS['error_msg'] = '上传图片失败';
 		return False;
 	}
-
-	$GLOBALS['image_path'] = $target;	
+	// 去掉前面的两个点 在转化为utf-8格式的编码
+	$GLOBALS['image_path'] = iconv('GBK','UTF-8',substr($target,2));	
 	$GLOBALS['errror_msg'] = '上传图片成功';
 	return True;
 }
@@ -127,13 +130,13 @@ function checkAudio(){
 	 	mkdir("../uploads/audio",0777,true);
 	}
 
-	$target = '../uploads/audio/' . uniqid() . $audio['name'];
+	$target = '../uploads/img/' . uniqid() . iconv('UTF-8', 'GBK', $audio['name']);
 	if (!move_uploaded_file($audio['tmp_name'],$target)) {
 		$GLOBALS['error_msg'] = '上传音乐失败';
 		
 		return False;
 	}
-	$GLOBALS['audio_path'] = $target;
+	$GLOBALS['audio_path'] = iconv('GBK', 'UTF-8',substr($target,2));
 	$GLOBALS['errror_msg'] = '上传音乐成功';
 	return True;
 }
